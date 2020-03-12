@@ -62,6 +62,8 @@ namespace dyquo.iplocation
         /// <param name="ipLocationDb">The Sqlite database file that contains the ip2location city-level database</param>
         public IpLocation(string ipLocationDb)
         {
+            if (!File.Exists(ipLocationDb)) throw new Exception($"DB file {ipLocationDb} not found");
+
             mConnection = GetConnection(ipLocationDb);
         }
 
