@@ -2,6 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>David Suárez</Authors>
+    <Company>Dyquo Labs</Company>
+    <Product>iplocation.local</Product>
+    <Description>A quick package to perform IP geolocation lookups using ip2location.com databases.</Description>
+    <Copyright>2020 David Suárez</Copyright>
+    <PackageProjectUrl>https://github.com/dsuarezv/iplocation/tree/master/dyquo.iplocation</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/dsuarezv/iplocation/tree/master/dyquo.iplocation</RepositoryUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>iplocation.local</PackageId>
+    <PackageTags>ip2location, .net, ip, geolocation, local</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

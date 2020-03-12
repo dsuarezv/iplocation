@@ -10,7 +10,7 @@ This is a small and fast library that will import a geolocation database from IP
 
 You need to register at ip2location.com and download one of the databases they provide. This code is made to parse the CSV version of the ip2location-lite-db5 database. This database will provide accuracy up to the city level, as well as latitude and longitude.
 
-Once you have the ip2location-lite-db5.csv file on your computer, run this code to import it into a sqlite DB that will later use for querying:
+Once you have the ip2location-lite-db5.csv file on your computer, run this code to import it into a sqlite DB that will be used later for querying:
 
 	IpLocation.ImportIpLocationCsv(ipLocationCsv, ipLocationDb);
 
