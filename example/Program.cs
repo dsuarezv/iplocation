@@ -16,14 +16,23 @@ namespace example
             var ipLocationCsv = args[0];
             var ipLocationDb = args[1];
 
-            IpLocation.ImportIpLocationCsv(ipLocationCsv, ipLocationDb);
+            //IpLocation.ImportIpLocationCsv(ipLocationCsv, ipLocationDb);
 
             using (var ipl = new IpLocation(ipLocationDb))
             {
-                var result = ipl.GetIpLocation("79.65.23.52");
-
-                Console.WriteLine(result);
+                PrintIp(ipl, "8.8.65.8");
+                PrintIp(ipl, "8.8.4.4");
             }
+        }
+
+        static void PrintIp(IpLocation ipl, string ipAddress)
+        {
+            var result = ipl.GetIpLocation(ipAddress);
+            
+            if (result == null) 
+                Console.WriteLine(ipAddress + " not found");
+            else
+                Console.WriteLine(result);
         }
     }
 }

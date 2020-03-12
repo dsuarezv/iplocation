@@ -3,6 +3,7 @@ using System.IO;
 using Microsoft.Data.Sqlite;
 using System.Data;
 using System.Text;
+using System.Linq;
 
 namespace dyquo.iplocation
 {
@@ -84,7 +85,24 @@ namespace dyquo.iplocation
         {
             var intIp = GetIntFromIp(ipAddress);
 
-            return new IpLocationResult();
+            var cmd = mConnection.CreateCommand();
+            cmd.CommandText = $"SELECT countryCode, country, state, city, latitude, longitude FROM ipranges WHERE ipFrom <= {intIp} AND ipTo >= {intIp};";
+            using (var reader = cmd.ExecuteReader())
+            {
+                if (!reader.Read()) return null;
+
+                return new IpLocationResult
+                {
+                    IpAddress = ipAddress,
+                    IntIpAddress = intIp,
+                    CountryCode = reader.GetString(0),
+                    Country = reader.GetString(1),
+                    State = reader.GetString(2),
+                    City = reader.GetString(3),
+                    Latitude = reader.GetString(4),
+                    Longitude = reader.GetString(5)
+                };
+            }
         }
 
 
@@ -163,9 +181,33 @@ namespace dyquo.iplocation
             return result;
         }
 
-        private static int GetIntFromIp(string ipAddress)
-        { 
-            return 0;
+        private static uint GetIntFromIp(string ipAddress)
+        {
+            var cs = GetIpComponents(ipAddress);
+            if (cs == null || cs.Length != 4) return 0;
+
+            var c1 = cs[0] << 24;
+            var c2 = cs[1] << 16;
+            var c3 = cs[2] << 8;
+            var c4 = cs[3];
+
+            return c1 + c2 + c3 + c4;
+        }
+
+        private static uint[] GetIpComponents(string ipAddress)
+        {
+            if (String.IsNullOrEmpty(ipAddress)) return null;
+            
+            var comps = ipAddress.Split('.');
+            if (comps.Length != 4) return null;
+
+            return comps.Select<string, uint>(byteString =>
+            {
+                if (!uint.TryParse(byteString, out uint result)) return 0;
+                if (result > 255) return 0;
+
+                return result;
+            }).ToArray();
         }
 
 
@@ -175,7 +217,8 @@ namespace dyquo.iplocation
 
     public class IpLocationResult
     {
-        public int IpAddress { get; set; }
+        public string IpAddress { get; set; }
+        public uint IntIpAddress { get; set; }
         public string CountryCode { get; set; }
         public string State { get; set; }
         public string Country { get; set; }
@@ -185,7 +228,7 @@ namespace dyquo.iplocation
 
         public override string ToString()
         {
-            return $"{Country} {State} {City} {Latitude} {Longitude}";
+            return $"IP: {IpAddress} -> {IntIpAddress}: {Country}, {State}, {City}, ({Latitude}, {Longitude})";
         }
     }
 }
