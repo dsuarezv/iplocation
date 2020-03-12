@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "example": {
+      "commandName": "Project",
+      "commandLineArgs": "..\\..\\..\\..\\..\\ip2location-lite-db5.csv ipranges.sqlite"
+    }
+  }
+}
