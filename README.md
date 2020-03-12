@@ -14,9 +14,9 @@ Once you have the ip2location-lite-db5.csv file on your computer, run this code 
 
 	IpLocation.ImportIpLocationCsv(ipLocationCsv, ipLocationDb);
 
-You only need to this once. It will generate a sqlite file with the parsed contents of the CSV file. 
+It will take a minute, it's processing around 3M records. You only need to do this once. It will generate a sqlite file with the parsed contents of the CSV file. 
 
-To query IP address: 
+To query an IP address: 
 
     using (var ipl = new IpLocation(ipLocationDb))
     {
